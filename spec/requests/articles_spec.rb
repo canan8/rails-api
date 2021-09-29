@@ -21,5 +21,15 @@ RSpec.describe ArticlesController do
         slug: article.slug
       )
     end
+
+    it 'returns articles in the proper order' do
+      older_article = create(:article, created_at: 2.days.ago)
+      recent_article = create(:article, created_at: 1.day.ago)
+
+      get '/articles'
+
+      expect(json_data.first[:id]).to eq(recent_article.id.to_s)
+      expect(json_data.last[:id]).to eq(older_article.id.to_s)
+    end
   end
 end
