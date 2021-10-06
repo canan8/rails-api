@@ -11,6 +11,8 @@ class ArticlesController < ApplicationController
     article = Article.find(params[:id])
 
     render json: serializer.new(article)
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { errors: ['User not found'] }, status: :not_found
   end
 
   def serializer
