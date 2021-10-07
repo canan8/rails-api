@@ -39,9 +39,15 @@ RSpec.describe UserAuthenticator do
           :user).and_return(user_data)
       end
 
-      it 'should save the user when does not exists' do
+      it 'should save the user when does not exist' do
         expect{ subject }.to change(User, :count).by(1)
         expect(User.last.name).to eq('John Smith')
+      end
+
+      it 'should find the user when exists' do
+        user = create :user, user_data
+        expect{ subject }.not_to change(User, :count)
+        expect(authenticator.user).to eq(user)
       end
     end
   end
